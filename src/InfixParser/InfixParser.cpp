@@ -11,6 +11,7 @@ bool InfixParser::is_whitespace(char value) {
 int InfixParser::read_number(std::string::const_iterator& begin, std::string::const_iterator end) {
 	std::string num;
 	
+	// Read until the first non-number character
 	while (begin != end) {
 		if (!is_number(*begin)) { break; }
 
@@ -18,12 +19,14 @@ int InfixParser::read_number(std::string::const_iterator& begin, std::string::co
 		++begin;
 	}
 
+	// Convert the number string to an integer
 	return std::stoi(num);
 }
 
 std::string InfixParser::read_token(std::string::const_iterator& begin, std::string::const_iterator end) {
 	std::string token;
 
+	// Read until the first space or number character
 	while (begin != end)  {
 		if (is_whitespace(*begin)) { break; }
 		if (is_number(*begin)) { break; }
