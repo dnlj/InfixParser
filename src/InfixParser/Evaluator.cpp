@@ -32,6 +32,7 @@ namespace InfixParser {
 					continue;
 				}
 
+				// Store location before reading for error reporting
 				before = current;
 				
 				// Handle numbers and tokens
@@ -53,7 +54,7 @@ namespace InfixParser {
 				operators.pop();
 			}
 
-			// Ensure that tall operands have been used
+			// Ensure that all operands have been used
 			if (operands.size() != 1) {
 				throw EvaluationException{"Ill formed equation. To many operands."};
 			}
