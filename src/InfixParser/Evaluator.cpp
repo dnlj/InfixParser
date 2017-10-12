@@ -1,6 +1,3 @@
-// STD
-#include <sstream>
-
 // InfixParser
 #include <InfixParser/Evaluator.hpp>
 #include <InfixParser/InfixParser.hpp>
