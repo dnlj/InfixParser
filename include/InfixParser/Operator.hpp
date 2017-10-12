@@ -4,6 +4,9 @@
 #include <string>
 #include <stack>
 
+// InfixParser
+#include <InfixParser/InfixParser.hpp>
+
 namespace InfixParser {
 	class OperatorException : public std::runtime_error {
 		using runtime_error::runtime_error;
@@ -27,9 +30,6 @@ namespace InfixParser {
 	 */
 	class Operator {
 		public:
-			/** The operand stack type. */
-			using OperandStack = std::stack<int>;
-
 			/** The type of the funciton called when an Operator is applied. */
 			using OperatorFunction = void(*)(OperandStack&);
 

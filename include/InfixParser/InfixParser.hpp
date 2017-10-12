@@ -2,8 +2,12 @@
 
 // STD
 #include <string>
+#include <stack>
 
 namespace InfixParser {
+	/** The operand stack type. */
+	using OperandStack = std::stack<int>;
+
 	/**
 	 * @brief Checks if @p value is a number.
 	 * @param[in] value The value to check.
