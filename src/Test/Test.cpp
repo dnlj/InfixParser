@@ -17,3 +17,24 @@ void Test::check_equation(const std::string& equation, int expected) {
 	}
 }
 
+
+void Test::check_equation_throws(const std::string& equation, bool print) {
+	static InfixParser::Evaluator evaluator;
+	bool thrown = false;
+
+	// Check if an exception is thrown
+	try {
+		evaluator.evaluate(equation);
+	} catch (InfixParser::EvaluationException& except) {
+		thrown = true;
+
+		if (print) {
+			std::cout << except.what() << std::endl;
+		}
+	}
+
+	// Print a warning if no exception is thrown
+	if (!thrown) {
+		std::cout << "No exception thrown for equation: " << equation << std::endl;
+	}
+}
