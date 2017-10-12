@@ -37,7 +37,7 @@ namespace InfixParser {
 
 		private:
 			/** Stores all active operands */
-			std::stack<int> operands;
+			OperandStack operands;
 
 			/** Stores all active operators */
 			std::stack<const Operator*> operators;
