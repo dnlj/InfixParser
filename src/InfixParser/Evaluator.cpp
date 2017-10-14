@@ -82,43 +82,43 @@ namespace InfixParser {
 				op = &Operator::PRE_INCREMENT;
 				next_offset = 2;
 			} else {
-				op = (&Operator::ADD);
+				op = &Operator::ADD;
 			}
 		} else if (begin[0] == '-') {
 			if (begin + 1 != end && begin[1] == '-') {
-				op = (&Operator::PRE_DECREMENT);
+				op = &Operator::PRE_DECREMENT;
 				next_offset = 2;
 			} else {
 				if (operator_depth == 0) {
-					op = (&Operator::SUBTRACT);
+					op = &Operator::SUBTRACT;
 				} else {
-					op = (&Operator::NEGATE);
+					op = &Operator::NEGATE;
 				}
 			}
 		} else if (begin[0] == '>') {
 			if (begin + 1 != end && begin[1] == '=') {
-				op = (&Operator::GREATER_OR_EQUAL);
+				op = &Operator::GREATER_OR_EQUAL;
 				next_offset = 2;
 			} else {
-				op = (&Operator::GREATER);
+				op = &Operator::GREATER;
 			}
 		} else if (begin[0] == '<') {
 			if (begin + 1 != end && begin[1] == '=') {
-				op = (&Operator::LESS_OR_EQUAL);
+				op = &Operator::LESS_OR_EQUAL;
 				next_offset = 2;
 			} else {
-				op = (&Operator::LESS);
+				op = &Operator::LESS;
 			}
 		} else if (begin[0] == '!') {
 			if (begin + 1 != end && begin[1] == '=') {
-				op = (&Operator::NOT_EQUAL);
+				op = &Operator::NOT_EQUAL;
 				next_offset = 2;
 			} else {
-				op = (&Operator::NOT);
+				op = &Operator::NOT;
 			}
 		} else if (begin[0] == '&') {
 			if (begin + 1 != end && begin[1] == '&') {
-				op = (&Operator::AND);
+				op = &Operator::AND;
 				next_offset = 2;
 			} else {
 				++begin;
@@ -126,7 +126,7 @@ namespace InfixParser {
 			}
 		} else if (begin[0] == '|') {
 			if (begin + 1 != end && begin[1] == '|') {
-				op = (&Operator::OR);
+				op = &Operator::OR;
 				next_offset = 2;
 			} else {
 				++begin;
@@ -134,24 +134,24 @@ namespace InfixParser {
 			}
 		} else if (begin[0] == '=') {
 			if (begin + 1 != end && begin[1] == '=') {
-				op = (&Operator::EQUAL);
+				op = &Operator::EQUAL;
 				next_offset = 2;
 			} else {
 				++begin;
 				throw EvaluationException{"Extraneous \"=\"."};
 			}
 		} else if (begin[0] == '(') {
-			op = (&Operator::LEFT_PAREN);
+			op = &Operator::LEFT_PAREN;
 		} else if (begin[0] == ')') {
-			op = (&Operator::RIGHT_PAREN);
+			op = &Operator::RIGHT_PAREN;
 		} else if (begin[0] == '^') {
-			op = (&Operator::POWER);
+			op = &Operator::POWER;
 		} else if (begin[0] == '*') {
-			op = (&Operator::MULTIPLY);
+			op = &Operator::MULTIPLY;
 		} else if (begin[0] == '/') {
-			op = (&Operator::DIVIDE);
+			op = &Operator::DIVIDE;
 		} else if (begin[0] == '%') {
-			op = (&Operator::REMAINDER);
+			op = &Operator::REMAINDER;
 		}
 
 		begin += next_offset;
