@@ -22,9 +22,6 @@ namespace InfixParser {
 		auto current = begin;
 		auto end = equation.cend();
 
-		// Used only for error reporting
-		auto before = current;
-
 		// Parse the string
 		try {
 			while (current != end) {
@@ -34,9 +31,6 @@ namespace InfixParser {
 					continue;
 				}
 
-				// Store location before reading for error reporting
-				before = current;
-				
 				// Handle numbers and tokens
 				if (is_number(*current)) {
 					if (operator_depth > 0) {
@@ -51,9 +45,6 @@ namespace InfixParser {
 					handle_token(current, end);
 				}
 			}
-
-			// Update the current position for error reporting
-			before = current - 1;
 
 			// Apply any remaining operators
 			while (!operators.empty()) {
