@@ -40,16 +40,25 @@ namespace InfixParser {
 					} else {
 						throw EvaluationException{"Expected operand."};
 					}
+
+					expect_operand = false;
 				} else {
 					auto token = read_token(current, end);
 					handle_token(token.begin(), token.end());
 				}
 			}
 
+			// Update the current position for error reporting
+			before = current - 1;
+
 			// Apply any remaining operators
 			while (!operators.empty()) {
 				operators.top()->apply(operands);
 				operators.pop();
+			}
+
+			if (expect_operand) {
+				throw EvaluationException{"Expected operand after."};
 			}
 
 			// Ensure that all operands have been used
@@ -194,6 +203,12 @@ namespace InfixParser {
 			}
 		}
 
+		// Store if we are expecting an operand in the future.
+		if (op->is_right_associative()) {
+			expect_operand = true;
+		}
+
+		// Add the operator to the stack
 		operators.push(op);
 		++operator_depth;
 	}
