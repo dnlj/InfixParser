@@ -264,6 +264,11 @@ void equation_throws_tests(bool print) {
 	Test::check_equation_throws("1/0", print);
 
 	// Other
+	Test::check_equation_throws("(<3+2)", print);
+	Test::check_equation_throws("(!<3+2)", print);
+	Test::check_equation_throws("(3-2)++", print); // TODO: Fix
+	Test::check_equation_throws("(3-2)++1", print); // TODO: Fix
+	Test::check_equation_throws("(3-2)!", print); // TODO: Fix
 	Test::check_equation_throws("2 + x", print);
 	Test::check_equation_throws("2 ? 3", print);
 	Test::check_equation_throws("3 - + 2", print);
