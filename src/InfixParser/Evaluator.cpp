@@ -120,25 +120,16 @@ namespace InfixParser {
 			if (begin + 1 != end && begin[1] == '&') {
 				op = &Operator::AND;
 				next_offset = 2;
-			} else {
-				++begin;
-				throw EvaluationException{"Extraneous \"&\"."};
 			}
 		} else if (begin[0] == '|') {
 			if (begin + 1 != end && begin[1] == '|') {
 				op = &Operator::OR;
 				next_offset = 2;
-			} else {
-				++begin;
-				throw EvaluationException{"Extraneous \"|\"."};
 			}
 		} else if (begin[0] == '=') {
 			if (begin + 1 != end && begin[1] == '=') {
 				op = &Operator::EQUAL;
 				next_offset = 2;
-			} else {
-				++begin;
-				throw EvaluationException{"Extraneous \"=\"."};
 			}
 		} else if (begin[0] == '(') {
 			op = &Operator::LEFT_PAREN;
