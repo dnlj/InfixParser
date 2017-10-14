@@ -183,7 +183,7 @@ namespace InfixParser {
 			return;
 		}
 
-		// Store if we are expecting an operand in the future.
+		// Error if we were expecting an operand
 		if (!is_right_associative && expect_operand) {
 			throw EvaluationException{"Expected operand."};
 		}
