@@ -22,18 +22,3 @@ int InfixParser::read_number(std::string::const_iterator& begin, std::string::co
 	// Convert the number string to an integer
 	return std::stoi(num);
 }
-
-std::string InfixParser::read_token(std::string::const_iterator& begin, std::string::const_iterator end) {
-	std::string token;
-
-	// Read until the first space or number character
-	while (begin != end)  {
-		if (is_whitespace(*begin)) { break; }
-		if (is_number(*begin)) { break; }
-
-		token += *begin;
-		++begin;
-	}
-
-	return token;
-}

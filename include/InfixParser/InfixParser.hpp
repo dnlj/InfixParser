@@ -30,13 +30,4 @@ namespace InfixParser {
 	 * @param[in] end The end of the string.
 	 */
 	int read_number(std::string::const_iterator& begin, std::string::const_iterator end);
-
-	/**
-	 * @brief Reads the first token from the string defined by @p begin, and @p end.
-	 * After this function is called @p begin points to one past the end of the token.
-	 *
-	 * @param[in,out] begin The beginning of the string.
-	 * @param[in] end The end of the string.
-	 */
-	std::string read_token(std::string::const_iterator& begin, std::string::const_iterator end);
 }
