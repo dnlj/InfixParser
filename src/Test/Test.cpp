@@ -21,10 +21,11 @@ void Test::check_equation(const std::string& equation, int expected) {
 void Test::check_equation_throws(const std::string& equation, bool print) {
 	static InfixParser::Evaluator evaluator;
 	bool thrown = false;
+	int value = 0;
 
 	// Check if an exception is thrown
 	try {
-		evaluator.evaluate(equation);
+		value = evaluator.evaluate(equation);
 	} catch (InfixParser::EvaluationException& except) {
 		thrown = true;
 
@@ -35,6 +36,6 @@ void Test::check_equation_throws(const std::string& equation, bool print) {
 
 	// Print a warning if no exception is thrown
 	if (!thrown) {
-		std::cout << "No exception thrown for equation: " << equation << std::endl;
+		std::cout << "No exception thrown for equation: " << equation << " value given " << value << std::endl;
 	}
 }
