@@ -36,6 +36,6 @@ void Test::check_equation_throws(const std::string& equation, bool print) {
 
 	// Print a warning if no exception is thrown
 	if (!thrown) {
-		std::cout << "No exception thrown for equation: " << equation << " value given " << value << std::endl;
+		std::cout << "No exception thrown for equation: " << equation << " value given " << value << "\n" << std::endl;
 	}
 }
