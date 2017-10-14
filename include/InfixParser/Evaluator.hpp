@@ -46,10 +46,11 @@ namespace InfixParser {
 			int operator_depth = 1;
 
 			/**
-			 * @brief Handles the processing of @p token.
-			 * @param[in] token The token to convert and evaluate.
+			 * @brief Handles the processing of the token defined by [@p begin, @p end).
+			 * @param[in] begin The beginning of the token to convert and evaluate.
+			 * @param[in] end The beginning of the token to convert and evaluate.
 			 */
-			void handle_token(const std::string& token);
+			void handle_token(std::string::iterator begin, const std::string::iterator& end);
 
 			/**
 			 * @brief Handles the processing of @p op.
