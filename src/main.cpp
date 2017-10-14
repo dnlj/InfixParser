@@ -268,7 +268,7 @@ void equation_throws_tests(bool print) {
 	Test::check_equation_throws("(!<3+2)", print);
 	Test::check_equation_throws("(3+2) * (/3)", print);
 	Test::check_equation_throws("(3-2)++", print);
-	Test::check_equation_throws("(3-2)++1", print); // TODO: Fix
+	Test::check_equation_throws("(3-2)++1", print);
 	Test::check_equation_throws("(3-2)!", print);
 	Test::check_equation_throws("3-!", print);
 	Test::check_equation_throws("3/(2!)", print);
@@ -276,6 +276,9 @@ void equation_throws_tests(bool print) {
 	Test::check_equation_throws("2 ? 3", print);
 	Test::check_equation_throws("3 - + 2", print);
 	Test::check_equation_throws("3 % 0", print);
+	Test::check_equation_throws("3 | 2", print);
+	Test::check_equation_throws("3 & 2", print);
+	Test::check_equation_throws("3 = 2", print);
 	Test::check_equation_throws("", print);
 }
 

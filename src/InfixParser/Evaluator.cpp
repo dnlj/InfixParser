@@ -121,21 +121,24 @@ namespace InfixParser {
 				op = (&Operator::AND);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
+				++begin;
+				throw EvaluationException{"Extraneous \"&\"."};
 			}
 		} else if (begin[0] == '|') {
 			if (begin + 1 != end && begin[1] == '|') {
 				op = (&Operator::OR);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
+				++begin;
+				throw EvaluationException{"Extraneous \"|\"."};
 			}
 		} else if (begin[0] == '=') {
 			if (begin + 1 != end && begin[1] == '=') {
 				op = (&Operator::EQUAL);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
+				++begin;
+				throw EvaluationException{"Extraneous \"=\"."};
 			}
 		} else if (begin[0] == '(') {
 			op = (&Operator::LEFT_PAREN);
@@ -162,16 +165,17 @@ namespace InfixParser {
 		if (is_whitespace(*begin)) { return; }
 		if (is_number(*begin)) { return; }
 
-		// Translate from tokens to operators
+		// Translate from a token to an operator
 		auto op = read_token(begin, end);
 
 		if (op == nullptr) {
 			throw EvaluationException{"Unknown operator."};
 		}
 
+		// Handle the operator
 		handle_operator(op);
 
-		// Handle the rest of the token
+		// Handle the rest of the string
 		handle_token(begin, end);
 	}
 
