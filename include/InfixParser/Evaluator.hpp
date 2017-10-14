@@ -49,11 +49,24 @@ namespace InfixParser {
 			bool expect_operand = true;
 
 			/**
-			 * @brief Handles the processing of the token defined by [@p begin, @p end).
-			 * @param[in] begin The beginning of the token to convert and evaluate.
-			 * @param[in] end The beginning of the token to convert and evaluate.
+			 * @brief Reads the next valid token in the string [@p begin, @p end).
+			 * After this function is called @p begin points to one past the end of the token.
+			 *
+			 * @param[in,out] begin The start of the string to read from.
+			 * @param[in] end The end of the string to read from.
+			 * @return The operator the read token represents. nullptr if no valid token could be read.
 			 */
-			void handle_token(std::string::iterator begin, const std::string::iterator& end);
+			const Operator* read_token(std::string::const_iterator& begin, const std::string::const_iterator& end);
+
+			/**
+			 * @brief Reads and processes the next token in the string defined by [@p begin, @p end).
+			 * After this function is called @p begin points to one past the end of the token.
+			 *
+			 * @param[in,out] begin The beginning of the string to convert and evaluate.
+			 * @param[in] end The beginning of the string to convert and evaluate.
+			 * @throws EquationException When there is no token to read.
+			 */
+			void handle_token(std::string::const_iterator& begin, const std::string::const_iterator& end);
 
 			/**
 			 * @brief Handles the processing of @p op.

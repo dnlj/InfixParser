@@ -48,8 +48,7 @@ namespace InfixParser {
 
 					expect_operand = false;
 				} else {
-					auto token = read_token(current, end);
-					handle_token(token.begin(), token.end());
+					handle_token(current, end);
 				}
 			}
 
@@ -71,106 +70,127 @@ namespace InfixParser {
 				throw EvaluationException{"Ill formed equation. To many operands."};
 			}
 		} catch (EvaluationException& except) {
-			throw_annotated(equation, except.what(), before - begin);
+			throw_annotated(equation, except.what(), current - begin - 1);
 		} catch (OperatorException& except) {
-			throw_annotated(equation, except.what(), before - begin);
+			throw_annotated(equation, except.what(), current - begin - 1);
 		}
 
 		// Get the result
 		return operands.top();
 	}
 
-	void Evaluator::handle_token(std::string::iterator begin, const std::string::iterator& end) {
-		if (begin == end) { return; }
+	const Operator* Evaluator::read_token(std::string::const_iterator& begin, const std::string::const_iterator& end) {
+		if (begin == end) { return nullptr; }
+
 		int next_offset = 1;
+		const Operator* op = nullptr;
 
 		// Translate from tokens to operators
 		if (begin[0] == '+') {
 			if (begin + 1 != end && begin[1] == '+') {
-				handle_operator(&Operator::PRE_INCREMENT);
+				op = &Operator::PRE_INCREMENT;
 				next_offset = 2;
 			} else {
-				handle_operator(&Operator::ADD);
+				op = (&Operator::ADD);
 			}
 		} else if (begin[0] == '-') {
 			if (begin + 1 != end && begin[1] == '-') {
-				handle_operator(&Operator::PRE_DECREMENT);
+				op = (&Operator::PRE_DECREMENT);
 				next_offset = 2;
 			} else {
 				if (operator_depth == 0) {
-					handle_operator(&Operator::SUBTRACT);
-				} else if (begin + 1 == end) {
-					handle_operator(&Operator::NEGATE);
+					op = (&Operator::SUBTRACT);
 				} else {
-					throw EvaluationException{"Extraneous \""+ std::string{begin, end} +"\"."};
+					op = (&Operator::NEGATE);
 				}
 			}
 		} else if (begin[0] == '>') {
 			if (begin + 1 != end && begin[1] == '=') {
-				handle_operator(&Operator::GREATER_OR_EQUAL);
+				op = (&Operator::GREATER_OR_EQUAL);
 				next_offset = 2;
 			} else {
-				handle_operator(&Operator::GREATER);
+				op = (&Operator::GREATER);
 			}
 		} else if (begin[0] == '<') {
 			if (begin + 1 != end && begin[1] == '=') {
-				handle_operator(&Operator::LESS_OR_EQUAL);
+				op = (&Operator::LESS_OR_EQUAL);
 				next_offset = 2;
 			} else {
-				handle_operator(&Operator::LESS);
+				op = (&Operator::LESS);
 			}
 		} else if (begin[0] == '!') {
 			if (begin + 1 != end && begin[1] == '=') {
-				handle_operator(&Operator::NOT_EQUAL);
+				op = (&Operator::NOT_EQUAL);
 				next_offset = 2;
 			} else {
-				handle_operator(&Operator::NOT);
+				op = (&Operator::NOT);
 			}
 		} else if (begin[0] == '&') {
 			if (begin + 1 != end && begin[1] == '&') {
-				handle_operator(&Operator::AND);
+				op = (&Operator::AND);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} + "\"."};
+				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
 			}
 		} else if (begin[0] == '|') {
 			if (begin + 1 != end && begin[1] == '|') {
-				handle_operator(&Operator::OR);
+				op = (&Operator::OR);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} + "\"."};
+				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
 			}
 		} else if (begin[0] == '=') {
 			if (begin + 1 != end && begin[1] == '=') {
-				handle_operator(&Operator::EQUAL);
+				op = (&Operator::EQUAL);
 				next_offset = 2;
 			} else {
-				throw EvaluationException{"Extraneous \"" + std::string{begin, end} + "\"."};
+				throw EvaluationException{"Extraneous \"" + std::string{begin, end} +"\"."};
 			}
 		} else if (begin[0] == '(') {
-			handle_operator(&Operator::LEFT_PAREN);
+			op = (&Operator::LEFT_PAREN);
 		} else if (begin[0] == ')') {
-			handle_operator(&Operator::RIGHT_PAREN);
+			op = (&Operator::RIGHT_PAREN);
 		} else if (begin[0] == '^') {
-			handle_operator(&Operator::POWER);
+			op = (&Operator::POWER);
 		} else if (begin[0] == '*') {
-			handle_operator(&Operator::MULTIPLY);
+			op = (&Operator::MULTIPLY);
 		} else if (begin[0] == '/') {
-			handle_operator(&Operator::DIVIDE);
+			op = (&Operator::DIVIDE);
 		} else if (begin[0] == '%') {
-			handle_operator(&Operator::REMAINDER);
-		} else {
-			throw EvaluationException{"Unknown operator \""+ std::string{begin, end} + "\"."};
+			op = (&Operator::REMAINDER);
 		}
 
+		begin += next_offset;
+		return op;
+	}
+
+	void Evaluator::handle_token(std::string::const_iterator& begin, const std::string::const_iterator& end) {
+		if (begin == end) { return; }
+
+		// Ensure we are dealing with a token
+		if (is_whitespace(*begin)) { return; }
+		if (is_number(*begin)) { return; }
+
+		// Translate from tokens to operators
+		auto op = read_token(begin, end);
+
+		if (op == nullptr) {
+			throw EvaluationException{"Unknown operator."};
+		}
+
+		handle_operator(op);
+
 		// Handle the rest of the token
-		handle_token(begin + next_offset, end);
+		handle_token(begin, end);
 	}
 
 	void Evaluator::handle_operator(const Operator* op) {
 		// Get useful information about the operator
 		const auto is_right_associative = op->is_right_associative();
 		const auto precedence = op->precedence();
+
+		// Increase operator depth
+		++operator_depth;
 
 		// Store if we are expecting an operand in the future.
 		if (is_right_associative) {
@@ -222,7 +242,6 @@ namespace InfixParser {
 
 		// Add the operator to the stack
 		operators.push(op);
-		++operator_depth;
 	}
 
 	void Evaluator::throw_annotated(const std::string& equation, std::string error, size_t pos) {
