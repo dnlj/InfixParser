@@ -211,6 +211,6 @@ namespace InfixParser {
 		left = left || right;
 	}};
 
-	const Operator Operator::LEFT_PAREN = {"(", 0, false, [](OperandStack& operands) {
+	const Operator Operator::LEFT_PAREN = {"(", 0, true, [](OperandStack& operands) {
 	}};
 }

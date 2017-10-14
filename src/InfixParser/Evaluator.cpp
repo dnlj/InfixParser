@@ -163,10 +163,22 @@ namespace InfixParser {
 	}
 
 	void Evaluator::handle_operator(const Operator* op) {
+		// Store if we are expecting an operand in the future.
+		auto is_right_associative = op->is_right_associative();
+
+		if (is_right_associative) {
+			expect_operand = true;
+		}
+
 		// Handle left parentheses
 		if (op == &Operator::LEFT_PAREN) {
 			operators.push(op);
 			return;
+		}
+
+		// Store if we are expecting an operand in the future.
+		if (!is_right_associative && expect_operand) {
+			throw EvaluationException{"Expected operand."};
 		}
 
 		// Handle right parentheses
@@ -201,13 +213,6 @@ namespace InfixParser {
 			} else {
 				break;
 			}
-		}
-
-		// Store if we are expecting an operand in the future.
-		if (op->is_right_associative()) {
-			expect_operand = true;
-		} else if (operands.empty()) {
-			throw EvaluationException{"Expected operand."};
 		}
 
 		// Add the operator to the stack

@@ -46,7 +46,7 @@ namespace InfixParser {
 			int operator_depth = 1;
 
 			/** True if an operand is expected. Used only for error reporting. */
-			bool expect_operand = false;
+			bool expect_operand = true;
 
 			/**
 			 * @brief Handles the processing of the token defined by [@p begin, @p end).
