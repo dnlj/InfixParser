@@ -7,6 +7,11 @@ namespace InfixParser {
 	}
 
 	int Evaluator::evaluate(const std::string& equation) {
+		// Ensure we have a non-empty equation
+		if (equation.empty()) {
+			throw EvaluationException{"Evaluator::evaluate only operates on non-empty equations."};
+		}
+
 		// Ensure our stacks are empty
 		operands = decltype(operands){};
 		operators = decltype(operators){};
