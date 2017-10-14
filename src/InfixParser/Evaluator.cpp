@@ -163,9 +163,11 @@ namespace InfixParser {
 	}
 
 	void Evaluator::handle_operator(const Operator* op) {
-		// Store if we are expecting an operand in the future.
-		auto is_right_associative = op->is_right_associative();
+		// Get useful information about the operator
+		const auto is_right_associative = op->is_right_associative();
+		const auto precedence = op->precedence();
 
+		// Store if we are expecting an operand in the future.
 		if (is_right_associative) {
 			expect_operand = true;
 		}
@@ -204,10 +206,8 @@ namespace InfixParser {
 		// Handle all other operators
 		while (!operators.empty()) {
 			auto top_prec = operators.top()->precedence();
-			auto op_prec = op->precedence();
-			auto op_right_assoc = op->is_right_associative();
 			
-			if (op_prec <= top_prec && !op_right_assoc) {
+			if (precedence <= top_prec && !is_right_associative) {
 				operators.top()->apply(operands);
 				operators.pop();
 			} else {
