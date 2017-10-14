@@ -37,7 +37,7 @@ namespace InfixParser {
 						operands.push(read_number(current, end));
 						operator_depth = 0;
 					} else {
-						throw EvaluationException{"Expected operand."};
+						throw EvaluationException{"Expected operator."};
 					}
 
 					expect_operand = false;
