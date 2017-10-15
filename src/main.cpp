@@ -282,14 +282,22 @@ void equation_throws_tests(bool print) {
 	Test::check_equation_throws("", print);
 }
 
-void run_tests() {
+void run_tests(bool print) {
 	equation_tests();
 	equation_tests_mixed();
-	equation_throws_tests(true);
+	equation_throws_tests(print);
 }
 
 int main() {
-	run_tests();
+	// Change this to true to print the error messages
+	run_tests(false);
+
+	// Example usage
+	std::string equation = "(2 + 3) * 5";
+	InfixParser::Evaluator evaluator;
+	auto result = evaluator.evaluate(equation);
+	std::cout << equation << " = " << result << "\n";
+
 	std::cout << "Done." << std::endl;
 	getchar();
 	return 0;
