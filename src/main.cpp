@@ -292,14 +292,22 @@ void run_tests(bool print) {
 }
 
 int main() {
-	// Change this to true to print the error messages
+	// Change this to true to print the error messages from the tests
 	run_tests(false);
 
 	// Example usage
-	std::string equation = "(2 + 3) * 5";
-	InfixParser::Evaluator evaluator;
-	auto result = evaluator.evaluate(equation);
-	std::cout << equation << " = " << result << "\n";
+	try {
+		std::string equation = "(2 + 3) * 5";
+		InfixParser::Evaluator evaluator;
+
+		auto result = evaluator.evaluate(equation);
+
+		std::cout << equation << " = " << result << "\n";
+	} catch (const InfixParser::EvaluationException& except) {
+		// Print out any errors
+		std::cout << except.what() << std::endl;
+		throw except;
+	}
 
 	std::cout << "Done." << std::endl;
 	getchar();
